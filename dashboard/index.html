@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — pre-token protocol board</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="pulse" aria-hidden="true"></span>
+    <h1>TOKEN RADAR</h1><span class="tag">pre-token protocol board</span></div>
+  <div class="asof" id="asof">Snapshot 2026-11-14 · DefiLlama</div>
+</header>
+
+<section class="stats" id="stats" aria-label="Board summary"></section>
+
+<section class="controls">
+  <input id="q" type="search" placeholder="Search name or slug…" aria-label="Search protocols">
+  <select id="cat" aria-label="Filter by category"><option value="">All categories</option></select>
+  <select id="chain" aria-label="Filter by chain"><option value="">All chains</option></select>
+  <select id="status" aria-label="Filter by token status">
+    <option value="pre">Pre-token — no token recorded</option>
+    <option value="all">All rows</option>
+    <option value="trading">Token trading</option>
+  </select>
+  <span id="count" class="count"></span>
+</section>
+
+<main>
+  <table id="board">
+    <thead><tr>
+      <th data-sort="rank" class="num sorted-asc">#</th>
+      <th data-sort="name">Protocol</th>
+      <th data-sort="category">Category</th>
+      <th data-sort="chains">Chains</th>
+      <th data-sort="tvl" class="num">TVL</th>
+      <th data-sort="growth" class="num">7d</th>
+      <th data-sort="age" class="num">Age</th>
+      <th data-sort="implied" class="num">Implied value</th>
+      <th>List</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p id="empty" class="empty" hidden></p>
+</main>
+
+<details class="method">
+  <summary>How the radar ranks — the model, in one paragraph</summary>
+  <p><strong>Implied value = TVL × growth factor × age factor × launch factor × token factor.</strong>
+  The growth factor follows the protocol's 7-day TVL change (clamped to −50%…+100%).
+  The age factor rewards how long it has run with no token (up to +50% at 3 years).
+  The launch factor discounts exchanges, bridges and wrapped or staked products
+  (×0.25) and versioned names (×0.5) — the same rule the snapshot's watchlist
+  uses. The token factor is ×1.5 for a protocol that <em>records no token</em>
+  and ×0.35 for one whose token already trades: those are scored and left off
+  this board, because their launch has already happened. The same formula runs
+  in <code>app.js</code> as <code>impliedValue()</code>, recomputing every row's
+  value from its own figures — the board and the code cannot disagree.</p>
+  <p>Farm plans are built from each protocol's category, chains, TVL and age:
+  the same templates live in <code>main.ts</code> and in <code>app.js</code>.
+  Every step names a cost and a time. A protocol "records no token" when
+  DefiLlama carries no token for it — that is the record, not proof it has
+  none. Nothing here predicts whether or when a token is issued.</p>
+</details>
+
+<aside id="detail" class="detail" hidden aria-label="Protocol detail"></aside>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
